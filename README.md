@@ -4,6 +4,8 @@ emailsupport
 This package contains auxiliary support information and routines for dealing
 with email handling.
 
+[![Build Status](https://api.travis-ci.org/philpennock/emailsupport.png?branch=master)](https://travis-ci.org/philpennock/emailsupport)
+
 At present, it only has some regular expressions which have been tested by
 being in use for many years, in Perl, but have here been translated to
 Golang's regexp library.  Other bits and pieces will creep in, as this package
