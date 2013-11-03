@@ -99,12 +99,13 @@ func TestIPv4Netblocks(t *testing.T) {
 
 // these are the tests from my emit_ipv6_regexp tool
 func TestIPv6AddressesFromEmitTester(t *testing.T) {
-	iterateBoolPatternMatch(t, IPv6Address, "IPv4Address", []boolPatternMatch{
+	iterateBoolPatternMatch(t, IPv6Address, "IPv6Address", []boolPatternMatch{
 		{"::", true},
 		{"::1", true},
 		{"fe02::1", true},
 		{"::ffff:192.0.2.1", true},
 		{"2001:DB8::42", true},
+		{"2001:db8::42", true},
 		{"2001:DB8:1234:5678:90ab:cdef:0123:4567", true},
 		{"2001:DB8:1234:5678:90ab:cdef:0123::", true},
 		{"2001:DB8:1234:5678:90ab:cdef::0123", true},
@@ -149,7 +150,68 @@ func TestEmailLHS(t *testing.T) {
 		{`"john"`, true},
 		{`"john doe"`, true},
 		{`a~` + "`" + `*&^%$#!_-={|}'/?b`, true},
+		{`#`, true},
 		{`"X'); DROP TABLE domains; DROP TABLE passwords; --"`, true},
 		{`"<script>alert('Boo!')</script>"`, true},
+	})
+}
+
+func TestEmailDomain(t *testing.T) {
+	iterateBoolPatternMatch(t, EmailDomain, "EmailDomain", []boolPatternMatch{
+		{"example.org", true},
+		{"example.org.", false},
+		{".org", false},
+		{"a-b.example", true},
+		{"a--b.example", true},    // not valid to _register_ as a domain, but valid in SMTP grammar
+		{"xn--4bi.example", true}, // xn--4bi = ✉ (ENVELOPE); xn-- being why -- is valid in a domain
+		{"a-b", false},
+		{"xn--4bi", false},
+		{"", false},
+		{".", false},
+		{"192.0.2.1", true},   // is within a TLD 1, not for routing to an IP address
+		{"[192.0.2.1]", true}, // routing to an IP address
+		{"2001:db8::42", false},
+		{"[2001:db8::42]", false},
+		{"[ipv6:2001:db8::42]", true},
+		{"[IPv6:2001:db8::42]", true},
+	})
+}
+
+func TestEmailAddress(t *testing.T) {
+	iterateBoolPatternMatch(t, EmailAddress, "EmailAddress", []boolPatternMatch{
+		{`john@example.org`, true},
+		{`john.doe@example.org`, true},
+		{`sample-list@list.example.org`, true},
+		{`john+foo@example.org`, true},
+		{`<john.doe@example.org>`, false},
+		{`john@our-subdomain`, false},
+		{`john@our-subdomain.`, false},
+		{`john@our-subdomain.example`, true},
+		{`deliver@xn--4bi.example`, true},
+		{`john@[IPv6:2001:db8::42]`, true},
+		{`john@[192.0.2.1]`, true},
+		{`"john.doe"@example.org`, true},
+		{`"john doe"@example.org`, true},
+		{`"john doe@example.org`, false},
+		{`" john doe"@example.org`, true},
+		{`""@example.org`, true},
+
+		// in the next two, s/example/spodhuis/ to get a real address, by explicit configuration not catchall
+		{"\"a~`*&^$#_-={}'?b\"@example.org", true},
+		{`"X'); DROP TABLE domains; DROP TABLE passwords; --"@example.org`, true},
+	})
+}
+
+func TestEmailAddressOrUnqualified(t *testing.T) {
+	iterateBoolPatternMatch(t, EmailAddressOrUnqualified, "EmailAddressOrUnqualified", []boolPatternMatch{
+		{`john`, true},
+		{`john@example.org`, true},
+		{`john:`, false},
+		{`"john:"`, true},
+		{`"john:"@example.org`, true},
+		{`#`, true},  // beware using for a comment
+		{`;`, false}, // better comment character
+		{`# foo`, false},
+		{`"# foo"`, true},
 	})
 }
