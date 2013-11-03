@@ -30,32 +30,37 @@ any capturing groups, letting the caller manage capturing indices.
 
 Thus for any `Foo`, this package provides:
 
-* TxtFoo: the regular expression as a text string, safe for embedding
-* Foo: a regexp object which is anchored to start and end
-* FooUnanchored: a regexp object which is not anchored
+ * TxtFoo: the regular expression as a text string, safe for embedding
+ * Foo: a regexp object which is anchored to start and end
+ * FooUnanchored: a regexp object which is not anchored
 
 The list includes:
-* `EmailAddress`: an RFC5321 email address, the part within angle-brackets or
-  as is used in SMTP.  This is _not_ an RFC5322 message header email email
-  address, with display forms and comments.
-* `EmailDomain`: a domain which can be used in email addresses; this is the
-  base specification form and does not handle internationalisation, though this
-  regexp should be correct to apply against punycode-encoded domains.  This does
-  handle embedded IPv4 and IPv6 address literals, but not the
-  General-address-literal which is a grammar hook for future extension (because
-  that inherently can't be handled until defined).
-* `EmailLHS`: the Left-Hand-Side (or "local part") of an email address; this
-  handles unquoted and quoted forms.
-* `EmailAddressOrUnqualified`: either an address or a LHS, this is a form often
-  used in mail configuration files where a domain is implicit.
 
-* `IPv4Address`, `IPv6Address`: an IPv4 or IPv6 address
-* `IPv4Netblock`, `IPv6Netblock`, IPNetblock: a netblock in CIDR prefix/len notation (used
-  for source ACLs)
-* `IPv4Octet`: a number 0 to 255
+ * `EmailAddress`: an RFC5321 email address, the part within angle-brackets or
+   as is used in SMTP.  This is _not_ an RFC5322 message header email email
+   address, with display forms and comments.
+ * `EmailDomain`: a domain which can be used in email addresses; this is the
+   base specification form and does not handle internationalisation, though this
+   regexp should be correct to apply against punycode-encoded domains.  This does
+   handle embedded IPv4 and IPv6 address literals, but not the
+   General-address-literal which is a grammar hook for future extension (because
+   that inherently can't be handled until defined).
+ * `EmailLHS`: the Left-Hand-Side (or "local part") of an email address; this
+   handles unquoted and quoted forms.
+ * `EmailAddressOrUnqualified`: either an address or a LHS, this is a form often
+   used in mail configuration files where a domain is implicit.
+
+ * `IPv4Address`, `IPv6Address`: an IPv4 or IPv6 address
+ * `IPv4Netblock`, `IPv6Netblock`, IPNetblock: a netblock in CIDR prefix/len notation (used
+   for source ACLs)
+ * `IPv4Octet`: a number 0 to 255
 
 The IPv6 address regexp is taken from RFC3986 (the one which gets it right) and
 is a careful copy/paste and edit of a version which has been used and gradually
 debugged for years, including in a tool I released called `emit_ipv6_regexp`.
 */
 package emailsupport
+
+// I know full well that markdown isn't handled in godoc; I choose to use the
+// notation anyway, in the hopes of future tooling that provide for better
+// markup control.

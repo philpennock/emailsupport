@@ -20,8 +20,8 @@ compatible.  Additionally, the [godep](https://github.com/kr/godep) command is
 used to track dependencies (currently none), in the file `Godeps`.
 
 The package is documented using the native godoc system.
-
-<!-- TODO: include a godoc.org link once repository is public -->
+A public interface is available at
+[godoc.org](http://godoc.org/github.com/philpennock/emailsupport).
 
 
 Testing
