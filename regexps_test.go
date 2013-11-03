@@ -31,8 +31,8 @@ func iterateBoolPatternMatch(
 	}
 }
 
-func TestIpv4Octets(t *testing.T) {
-	iterateBoolPatternMatch(t, Ipv4Octet, "Ipv4Octet", []boolPatternMatch{
+func TestIPv4Octets(t *testing.T) {
+	iterateBoolPatternMatch(t, IPv4Octet, "IPv4Octet", []boolPatternMatch{
 		{"0", true},
 		{"1", true},
 		{"9", true},
@@ -65,8 +65,8 @@ func TestIpv4Octets(t *testing.T) {
 	})
 }
 
-func TestIpv4Addresses(t *testing.T) {
-	iterateBoolPatternMatch(t, Ipv4Address, "Ipv4Address", []boolPatternMatch{
+func TestIPv4Addresses(t *testing.T) {
+	iterateBoolPatternMatch(t, IPv4Address, "IPv4Address", []boolPatternMatch{
 		{"0.0.0.0", true},
 		{"255.255.255.255", true},
 		{"0.0.0.0.0", false},
@@ -80,8 +80,8 @@ func TestIpv4Addresses(t *testing.T) {
 	})
 }
 
-func TestIpv4Netblocks(t *testing.T) {
-	iterateBoolPatternMatch(t, Ipv4Netblock, "Ipv4Netblock", []boolPatternMatch{
+func TestIPv4Netblocks(t *testing.T) {
+	iterateBoolPatternMatch(t, IPv4Netblock, "IPv4Netblock", []boolPatternMatch{
 		{"0.0.0.0/0", true},
 		{"127.0.0.0/8", true},
 		{"192.0.2.0/24", true},
@@ -98,8 +98,8 @@ func TestIpv4Netblocks(t *testing.T) {
 }
 
 // these are the tests from my emit_ipv6_regexp tool
-func TestIpv6AddressesFromEmitTester(t *testing.T) {
-	iterateBoolPatternMatch(t, Ipv6Address, "Ipv4Address", []boolPatternMatch{
+func TestIPv6AddressesFromEmitTester(t *testing.T) {
+	iterateBoolPatternMatch(t, IPv6Address, "IPv4Address", []boolPatternMatch{
 		{"::", true},
 		{"::1", true},
 		{"fe02::1", true},
@@ -124,8 +124,8 @@ func TestIpv6AddressesFromEmitTester(t *testing.T) {
 	})
 }
 
-func TestIpv6Netblocks(t *testing.T) {
-	iterateBoolPatternMatch(t, Ipv6Netblock, "Ipv6Netblock", []boolPatternMatch{
+func TestIPv6Netblocks(t *testing.T) {
+	iterateBoolPatternMatch(t, IPv6Netblock, "IPv6Netblock", []boolPatternMatch{
 		{"::/0", true},
 		{"fe02::/8", true},
 		{"fe02::/08", false},
@@ -136,10 +136,6 @@ func TestIpv6Netblocks(t *testing.T) {
 		{"2001:DB8:1234:5678::/128", true},
 		{"2001:DB8:1234:5678::/129", false},
 	})
-}
-
-func TestDebug(t *testing.T) {
-	t.Logf("\nATEXT: %s\nQTEXT: %s\nLHS:\n%s\nDomain: %s\n", txtAText, txtQText, txtEmailLHS, txtEmailDomain)
 }
 
 func TestEmailLHS(t *testing.T) {

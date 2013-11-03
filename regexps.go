@@ -1,11 +1,5 @@
 // © Phil Pennock 2013.  See LICENSE file for licensing.
 
-/*
-This package contains some more esoteric routines useful for parsing
-and handling email.  For instance, some baroque regular expressions.
-
-No APIs are stable.  Make sure you handle your dependencies accordingly.
-*/
 package emailsupport
 
 import (
@@ -24,18 +18,18 @@ const (
 )
 
 const (
-	txtIpv4Octet    = `(?:25[0-5]|(?:[1-9]|1[0-9]|2[0-4])?[0-9])`
-	txtIpv4Address  = `(?:(?:` + txtIpv4Octet + `\.){3}` + txtIpv4Octet + `)`
-	txtIpv4Netblock = `(?:` + txtIpv4Address + `/(?:[12]?[0-9]|3[0-2]))`
+	TxtIPv4Octet    = `(?:25[0-5]|(?:[1-9]|1[0-9]|2[0-4])?[0-9])`
+	TxtIPv4Address  = `(?:(?:` + TxtIPv4Octet + `\.){3}` + TxtIPv4Octet + `)`
+	TxtIPv4Netblock = `(?:` + TxtIPv4Address + `/(?:[12]?[0-9]|3[0-2]))`
 )
 
 var (
-	Ipv4OctetUnanchored    = regexp.MustCompile(txtIpv4Octet)
-	Ipv4Octet              = regexp.MustCompile(start + txtIpv4Octet + end)
-	Ipv4AddressUnanchored  = regexp.MustCompile(txtIpv4Address)
-	Ipv4Address            = regexp.MustCompile(start + txtIpv4Address + end)
-	Ipv4NetblockUnanchored = regexp.MustCompile(txtIpv4Netblock)
-	Ipv4Netblock           = regexp.MustCompile(start + txtIpv4Netblock + end)
+	IPv4OctetUnanchored    = regexp.MustCompile(TxtIPv4Octet)
+	IPv4Octet              = regexp.MustCompile(start + TxtIPv4Octet + end)
+	IPv4AddressUnanchored  = regexp.MustCompile(TxtIPv4Address)
+	IPv4Address            = regexp.MustCompile(start + TxtIPv4Address + end)
+	IPv4NetblockUnanchored = regexp.MustCompile(TxtIPv4Netblock)
+	IPv4Netblock           = regexp.MustCompile(start + TxtIPv4Netblock + end)
 )
 
 /*
@@ -80,31 +74,33 @@ var (
 // this would be easier if the Go constructor supported extended mode
 
 const (
-	txtIpv6H16  = `(?:[0-9a-fA-F]{1,4})`
-	txtIpv6LS32 = `(?:(?:` + txtIpv6H16 + `:` + txtIpv6H16 + `)|` + txtIpv4Address + `)`
+	txtIPv6H16  = `(?:[0-9a-fA-F]{1,4})`
+	txtIPv6LS32 = `(?:(?:` + txtIPv6H16 + `:` + txtIPv6H16 + `)|` + TxtIPv4Address + `)`
 )
 
 var (
-	txtIpv6Address = strings.Join([]string{`(?:`,
-		`(?:(?:(?:`, txtIpv6H16, `:){6})`, txtIpv6LS32, `)|`,
-		`(?:(?:::(?:`, txtIpv6H16, `:){5})`, txtIpv6LS32, `)|`,
-		`(?:(?:(?:`, txtIpv6H16, `)?::(?:`, txtIpv6H16, `:){4})`, txtIpv6LS32, `)|`,
-		`(?:(?:(?:(?:`, txtIpv6H16, `:){0,1}`, txtIpv6H16, `)?::(?:`, txtIpv6H16, `:){3})`, txtIpv6LS32, `)|`,
-		`(?:(?:(?:(?:`, txtIpv6H16, `:){0,2}`, txtIpv6H16, `)?::(?:`, txtIpv6H16, `:){2})`, txtIpv6LS32, `)|`,
-		`(?:(?:(?:(?:`, txtIpv6H16, `:){0,3}`, txtIpv6H16, `)?::`, txtIpv6H16, `:)`, txtIpv6LS32, `)|`,
-		`(?:(?:(?:(?:`, txtIpv6H16, `:){0,4}`, txtIpv6H16, `)?::)`, txtIpv6LS32, `)|`,
-		`(?:(?:(?:(?:`, txtIpv6H16, `:){0,5}`, txtIpv6H16, `)?::)`, txtIpv6H16, `)|`,
-		`(?:(?:(?:(?:`, txtIpv6H16, `:){0,6}`, txtIpv6H16, `)?::))`,
+	TxtIPv6Address = strings.Join([]string{`(?:`,
+		`(?:(?:(?:`, txtIPv6H16, `:){6})`, txtIPv6LS32, `)|`,
+		`(?:(?:::(?:`, txtIPv6H16, `:){5})`, txtIPv6LS32, `)|`,
+		`(?:(?:(?:`, txtIPv6H16, `)?::(?:`, txtIPv6H16, `:){4})`, txtIPv6LS32, `)|`,
+		`(?:(?:(?:(?:`, txtIPv6H16, `:){0,1}`, txtIPv6H16, `)?::(?:`, txtIPv6H16, `:){3})`, txtIPv6LS32, `)|`,
+		`(?:(?:(?:(?:`, txtIPv6H16, `:){0,2}`, txtIPv6H16, `)?::(?:`, txtIPv6H16, `:){2})`, txtIPv6LS32, `)|`,
+		`(?:(?:(?:(?:`, txtIPv6H16, `:){0,3}`, txtIPv6H16, `)?::`, txtIPv6H16, `:)`, txtIPv6LS32, `)|`,
+		`(?:(?:(?:(?:`, txtIPv6H16, `:){0,4}`, txtIPv6H16, `)?::)`, txtIPv6LS32, `)|`,
+		`(?:(?:(?:(?:`, txtIPv6H16, `:){0,5}`, txtIPv6H16, `)?::)`, txtIPv6H16, `)|`,
+		`(?:(?:(?:(?:`, txtIPv6H16, `:){0,6}`, txtIPv6H16, `)?::))`,
 		`)`}, "")
-	txtIpv6Netblock = `(?:` + txtIpv6Address + `/(?:[1-9]?[0-9]|1[01][0-9]|12[0-8]))`
-	txtIpNetblock   = `(?:` + txtIpv4Netblock + `|` + txtIpv6Netblock + `)`
+	TxtIPv6Netblock = `(?:` + TxtIPv6Address + `/(?:[1-9]?[0-9]|1[01][0-9]|12[0-8]))`
+	TxtIPNetblock   = `(?:` + TxtIPv4Netblock + `|` + TxtIPv6Netblock + `)`
 )
 
 var (
-	Ipv6AddressUnanchored  = regexp.MustCompile(txtIpv6Address)
-	Ipv6Address            = regexp.MustCompile(start + txtIpv6Address + end)
-	Ipv6NetblockUnanchored = regexp.MustCompile(txtIpv6Netblock)
-	Ipv6Netblock           = regexp.MustCompile(start + txtIpv6Netblock + end)
+	IPv6AddressUnanchored  = regexp.MustCompile(TxtIPv6Address)
+	IPv6Address            = regexp.MustCompile(start + TxtIPv6Address + end)
+	IPv6NetblockUnanchored = regexp.MustCompile(TxtIPv6Netblock)
+	IPv6Netblock           = regexp.MustCompile(start + TxtIPv6Netblock + end)
+	IPNetblockUnanchored   = regexp.MustCompile(TxtIPNetblock)
+	IPNetblock             = regexp.MustCompile(start + TxtIPNetblock + end)
 
 	// these don't handle scoped addresses, but SMTP doesn't permit them
 )
@@ -125,9 +121,8 @@ func deExtend(extended string) string {
 			func(r rune) rune {
 				if unicode.IsSpace(r) {
 					return -1
-				} else {
-					return r
 				}
+				return r
 			},
 			c))
 	}
@@ -139,7 +134,7 @@ const (
 	txtQText = `[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]`
 )
 
-var txtEmailLHS string = deExtend(`
+var TxtEmailLHS string = deExtend(`
 	 # Local-part
 	 (?:
 	  (?:
@@ -154,7 +149,7 @@ var txtEmailLHS string = deExtend(`
 	  )
 	 )`)
 
-var txtEmailDomain string = deExtend(`
+var TxtEmailDomain string = deExtend(`
 	 # Domain
 	 (?:
 		(?:
@@ -164,7 +159,7 @@ var txtEmailDomain string = deExtend(`
 		) | (?:
 			 # address-literals
 			 \[
-			   (?: ` + txtIpv4Address + ` | (?: [Ii][Pp][vV]6: ` + txtIpv6Address + ` ) )
+			   (?: ` + TxtIPv4Address + ` | (?: [Ii][Pp][vV]6: ` + TxtIPv6Address + ` ) )
 			   # NOTSUPP: General-address-literal
 			   # G-A-L is a hook for future literal addresses
 			   # and only specifies tag:content
@@ -172,17 +167,17 @@ var txtEmailDomain string = deExtend(`
 		)
 	 )`)
 
-var txtEmailAddress = `(?:(?:` + txtEmailLHS + `)@(?:` + txtEmailDomain + `))`
+var TxtEmailAddress = `(?:(?:` + TxtEmailLHS + `)@(?:` + TxtEmailDomain + `))`
 
-var txtEmailAddressOrUnqualified = `(?:` + txtEmailLHS + `(?:@` + txtEmailDomain + `)?)`
+var TxtEmailAddressOrUnqualified = `(?:` + TxtEmailLHS + `(?:@` + TxtEmailDomain + `)?)`
 
 var (
-	EmailLHSUnanchored                  = regexp.MustCompile(txtEmailLHS)
-	EmailLHS                            = regexp.MustCompile(start + txtEmailLHS + end)
-	EmailDomainUnanchored               = regexp.MustCompile(txtEmailDomain)
-	EmailDomain                         = regexp.MustCompile(start + txtEmailDomain + end)
-	EmailAddressUnanchored              = regexp.MustCompile(txtEmailAddress)
-	EmailAddress                        = regexp.MustCompile(start + txtEmailAddress + end)
-	EmailAddressOrUnqualifiedUnanchored = regexp.MustCompile(txtEmailAddressOrUnqualified)
-	EmailAddressOrUnqualified           = regexp.MustCompile(start + txtEmailAddressOrUnqualified + end)
+	EmailLHSUnanchored                  = regexp.MustCompile(TxtEmailLHS)
+	EmailLHS                            = regexp.MustCompile(start + TxtEmailLHS + end)
+	EmailDomainUnanchored               = regexp.MustCompile(TxtEmailDomain)
+	EmailDomain                         = regexp.MustCompile(start + TxtEmailDomain + end)
+	EmailAddressUnanchored              = regexp.MustCompile(TxtEmailAddress)
+	EmailAddress                        = regexp.MustCompile(start + TxtEmailAddress + end)
+	EmailAddressOrUnqualifiedUnanchored = regexp.MustCompile(TxtEmailAddressOrUnqualified)
+	EmailAddressOrUnqualified           = regexp.MustCompile(start + TxtEmailAddressOrUnqualified + end)
 )
