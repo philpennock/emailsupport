@@ -17,8 +17,8 @@ use by multiple goroutines.”
 Each regular expression comes in two forms, `Foo` and `FooUnanchored`.  The
 short name is anchored to the start and end of the pattern namespace, so that
 by default if you match an variable against `EmailAddress`, you are confirming
-that the contents of the email are an email address, not accidentally only
-matching that there's something email-like somewhere within.  The longer name
+that the contents of the variable are an email address, not accidentally only
+matching that there's something address-like somewhere within.  The longer name
 (I need something briefer which is still clear) provides a pattern which can
 be used to find a regular expression elsewhere.
 
