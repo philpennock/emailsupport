@@ -1,6 +1,12 @@
 language: go
 
+script: go test -v -tags "$BUILDTAGS" ./...
+
 go:
   - 1.1
   - 1.3
   - tip
+
+env:
+  - BUILDTAGS=""
+  - BUILDTAGS="rfc2822"

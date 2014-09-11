@@ -1,4 +1,4 @@
-// © Phil Pennock 2013.  See LICENSE file for licensing.
+// © Phil Pennock 2013-2014.  See LICENSE file for licensing.
 
 package emailsupport
 
@@ -131,7 +131,40 @@ func deExtend(extended string) string {
 
 const (
 	txtAText = `[A-Za-z0-9!#$%&'*+/=?^_` + "`" + `{|}~-]`
-	txtQText = `[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]`
+
+	// RFC 2822 defines qtext as:
+	//   NO-WS-CTL / %d33 / %d35-91 / %d93-126
+	// where NO-WS-CTL is defined as:
+	//   %d1-8 / %d11 / %d12 / %d14-31 / %d127
+	//
+	// Further it defines quoted-pair as: ("\" text) / obs-qp
+	// where text is defined as:
+	//   %d1-9 / %d11 / %d12 / %d14-127 / obs-text
+	// Then quoted-string = [CFWS] DQUOTE *([FWS] qcontent) [FWS] DQUOTE [CFWS]
+	//
+	// This leaves the space character in the FWS, optional (`[FWS]`)
+	txtQTextRFC2822       = `[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]`
+	txtQPairFollowRFC2822 = `[\x01-\x09\x0b\x0c\x0e-\x7f]`
+	txtWrapFWSRFC2822     = `\s*`
+
+	// RFC 5321 is rather more restrictive; it leaves atext in RFC 5322
+	// but brings qtext across and makes changes to what can appear after a
+	// backslash in a quoted pair.
+	//
+	// Local-part      = Dot-string / Quoted-string
+	// Dot-string      = Atom *("."  Atom)
+	// Atom            = 1*atext
+	// (atext is unchanged)
+	// Quoted-string   = DQUOTE *QcontentSMTP DQUOTE
+	// QcontentSMTP    = qtextSMTP / quoted-pairSMTP
+	// quoted-pairSMTP = %d92 %d32-126
+	// qtextSMTP       = %d32-33 / %d35-91 / %d93-126
+	//
+	// This moves the whitespace handling out of FWS, but abandons support
+	// for some control characters (lowest ASCII and 7F).
+	txtQTextRFC5321       = `[\x20-\x21\x23-\x5b\x5d-\x7e]`
+	txtQPairFollowRFC5321 = `[\x20-\x7e]`
+	txtWrapFWSRFC5321     = ``
 )
 
 var TxtEmailLHS string = deExtend(`
@@ -142,10 +175,10 @@ var TxtEmailLHS string = deExtend(`
 		(?:` + txtAText + `)+ (?: \. ` + txtAText + `+)*
 	  ) | (?:
 		# Quoted-string
-		" (?: \s* (?:
+		" (?: ` + txtWrapFWS + ` (?:
 		 (?: ` + txtQText + `+ ) |
-		 (?: \\ [\x01-\x09\x0b\x0c\x0e-\x7f] )
-		) )* "
+		 (?: \\ ` + txtQPairFollow + ` )
+		) )* ` + txtWrapFWS + ` "
 	  )
 	 )`)
 

@@ -1,4 +1,4 @@
-// © Phil Pennock 2013.  See LICENSE file for licensing.
+// © Phil Pennock 2013-2014.  See LICENSE file for licensing.
 
 package emailsupport
 
@@ -153,6 +153,13 @@ func TestEmailLHS(t *testing.T) {
 		{`#`, true},
 		{`"X'); DROP TABLE domains; DROP TABLE passwords; --"`, true},
 		{`"<script>alert('Boo!')</script>"`, true},
+		{`john doe`, false},
+		{`"john "`, true},
+		{`" john"`, true},
+		{`" john "`, true},
+		{`john `, false},
+		{` john`, false},
+		{` john `, false},
 	})
 }
 
