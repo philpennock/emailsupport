@@ -18,8 +18,7 @@ Using
 -----
 
 This package follows normal Go package naming convention and is `go get`
-compatible.  Additionally, the [godep](https://github.com/kr/godep) command is
-used to track dependencies (currently none), in the file `Godeps`.
+compatible.
 
 The package is documented using the native godoc system.
 A public interface is available at
