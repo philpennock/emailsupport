@@ -5,6 +5,8 @@ This package contains auxiliary support information and routines for dealing
 with email handling.
 
 [![Build Status](https://api.travis-ci.org/philpennock/emailsupport.png?branch=master)](https://travis-ci.org/philpennock/emailsupport)
+[![Documentation](http://godoc.org/github.com/philpennock/emailsupport?status.png)](http://godoc.org/github.com/philpennock/emailsupport)
+[![Coverage Status](https://coveralls.io/repos/philpennock/emailsupport/badge.png?branch=master)](https://coveralls.io/r/philpennock/emailsupport?branch=master)
 
 At present, it only has some regular expressions which have been tested by
 being in use for many years, in Perl, but have here been translated to

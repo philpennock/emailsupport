@@ -1,6 +1,10 @@
 language: go
 
-script: go test -v -tags "$BUILDTAGS" ./...
+install:
+  - ./Meta/travis_install.sh
+
+script:
+  - ./Meta/travis_test.sh
 
 go:
   - 1.1
@@ -8,5 +12,10 @@ go:
   - tip
 
 env:
-  - BUILDTAGS=""
-  - BUILDTAGS="rfc2822"
+  global:
+    - secure: "HMZ0QjmRxy8N68i1AAiITEsBBpVtPKSnAW4D4HjDp3ul8XvsMxeYoOSTrZFfWLbDSLT7LXYU0MqsncHlRuSnQQHW3H/UptkYRbo76Yv49LeLGbLZILVyGaxzzzNZGxYxmHErk005rGzVOOKhlC4WKHHOZblVA8tYPkiacN2E+S8="
+  matrix:
+    - BUILDTAGS=""
+    - BUILDTAGS="rfc2822"
+
+# vim: set sw=2 et :
