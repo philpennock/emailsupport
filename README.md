@@ -26,8 +26,25 @@ The package is documented using the native godoc system.
 A public interface is available at
 [godoc.org](http://godoc.org/github.com/philpennock/emailsupport).
 
+The allowed syntax for email addresses changes between [RFC2821][]/[RFC2822][]
+and their replacements, [RFC5321][]/[RFC5322][].
+By default, the regular expressions employ the newer syntax definitions, but
+you can build the library with a build-tag of `rfc2822` to use the definitions
+supplied in [RFC2822][] instead of those from [RFC5321][].
+
 
 Testing
 -------
 
 Run `go test`
+
+[build-tag]: http://golang.org/pkg/go/build/#hdr-Build_Constraints
+             "Build Constraints"
+[RFC2821]: https://www.ietf.org/rfc/rfc2821.txt
+           "Simple Mail Transfer Protocol"
+[RFC2822]: https://www.ietf.org/rfc/rfc2822.txt
+           "Internet Message Format"
+[RFC5321]: https://www.ietf.org/rfc/rfc5321.txt
+           "Simple Mail Transfer Protocol"
+[RFC5322]: https://www.ietf.org/rfc/rfc5322.txt
+           "Internet Message Format"

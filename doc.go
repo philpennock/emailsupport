@@ -58,6 +58,17 @@ The list includes:
 The IPv6 address regexp is taken from RFC3986 (the one which gets it right) and
 is a careful copy/paste and edit of a version which has been used and gradually
 debugged for years, including in a tool I released called `emit_ipv6_regexp`.
+
+The patterns used in `EmailLHS` (and thus also in items which include an email
+left-hand-side) can be in one of two forms, and selecting between them is a
+compile-time decision.  The rules can be either those from RFC2822 or those from
+RFC5321.  By default, those from RFC5321 are used.  Build with a `rfc2822`
+build-tag to get the older definitions.  If a future RFC changes the rules
+again, then the default patterns in this package may change; the build-tag
+`rfc5321` is currently unused, but is reserved for the future to force
+selecting the rules which are now current.
+It is safe (harmless) to supply that build-tag now (but not together with
+`rfc2822`).
 */
 package emailsupport
 
