@@ -13,7 +13,7 @@ case ${TRAVIS_GO_VERSION#go} in
   set +x ; : ${COVERALLS_TOKEN:?Need the coveralls.io token} ; set -x
   go test -v -tags "$BUILDTAGS" -covermode=count -coverprofile=coverage.out ./...
   set +x
-  echo 'goveralls -coverprofile=coverage.out -service=travis-ci -repotoken [censored] (failure ignored)'
+  echo 'goveralls -coverprofile=coverage.out -service=travis-ci -repotoken [censored] (any failures ignored)'
   goveralls -coverprofile=coverage.out -service=travis-ci -repotoken "$COVERALLS_TOKEN" || true
   set -x
   ;;
