@@ -4,6 +4,13 @@ PATH="${GOPATH%%:*}/bin:$PATH"
 
 : ${BUILDTAGS?'Need BUILDTAGS defined (may be empty)'}
 
+# Travis logs should include reproducibility/debugging information
+date
+uname -a
+git version
+go version
+git describe --always --dirty --tags
+
 case ${TRAVIS_GO_VERSION#go} in
 1.1|1.1.*)
   # No coverage support
