@@ -32,6 +32,12 @@ By default, the regular expressions employ the newer syntax definitions, but
 you can build the library with a build-tag of `rfc2822` to use the definitions
 supplied in [RFC2822][] instead of those from [RFC5321][].
 
+This package uses [semantic versioning](https://semver.org/).  
+Note that Go only supports the most recent two minor versions of the language;
+for the purposes of semver, we do not consider it a breaking change to add a
+dependency upon a language or standard library feature supported by all
+currently-supported releases of Go.
+
 
 Testing
 -------
