@@ -39,6 +39,28 @@ dependency upon a language or standard library feature supported by all
 currently-supported releases of Go.
 
 
+Tools
+-----
+
+This is primarily a library package.
+It does include two commands though.
+This follows the standard Go idiom of using sub-directories of `./cmd` to hold the commands.
+Thus you can use `go install ./cmd/...` to install them.
+
+Or: `go install -v github.com/philpennock/emailsupport/cmd/...@latest`
+
+ 1. `email-regexp-emit`: just prints a regular expression for an email
+    address.  The pattern uses `(?:  )` as a non-capturing group and is
+    otherwise a simple Extended Regular Expression, so just about any modern
+    regular expression library should be able to use it.
+
+ 2. `check-is-emailaddr`: can be given regexps on the command-line, or via an
+    input file, and for each one reports success or failure.
+    It exits true (0) if and only if every address given is fine.
+    It exits 1 if some input is not an email address.
+    It exists another non-zero value for problems in running.
+
+
 Testing
 -------
 
